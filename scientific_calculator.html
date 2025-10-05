@@ -14,18 +14,24 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Prevent scrolling on the entire page */
+        }
+
         body {
             font-family: "Josefin Sans", sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             padding: 20px;
+            background: #1a1a1a; /* Fallback background color */
         }
 
         .calculator-container {
             width: 100%;
             max-width: 400px;
+            max-height: calc(100vh - 40px); /* Account for body padding */
             background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
@@ -95,6 +101,8 @@
             gap: 2px 5px;
             padding: 10px;
             background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
+            overflow: auto; /* Allow scrolling only within the button grid if needed */
+            max-height: calc(100% - 140px); /* Adjust based on header and display heights */
         }
 
         .button-row {
@@ -202,11 +210,13 @@
             .calculator-container {
                 max-width: 100%;
                 border-radius: 15px;
+                max-height: calc(100vh - 40px); /* Maintain height constraint */
             }
             
             .button-grid {
                 gap: 5px;
                 padding: 8px;
+                max-height: calc(100% - 120px); /* Adjust for smaller screens */
             }
             
             .calc-button {
@@ -214,9 +224,10 @@
                 font-size: 15px;
                 min-height: 25px;
             }
+            
             .operator-button {
-            font-size: 20px;
-        }
+                font-size: 20px;
+            }
             
             #result {
                 height: 40px;
@@ -235,9 +246,11 @@
                 font-size: 12px;
                 min-height: 25px;
             }
+            
             .operator-button {
-            font-size: 20px;
-        }
+                font-size: 20px;
+            }
+            
             #result {
                 height: 40px;
                 font-size: 18px;
@@ -289,9 +302,6 @@
         <!-- Buttons Grid -->
         <div class="button-grid">
             <!-- Row 1: Root Buttons -->
-            <!-- <div class="button-label">
-                <small></small><small></small><small></small><small></small><small></small>
-            </div> -->
             <button class="calc-button function-button scientific-btn" onclick="cubeRut()" title="Cube Root"><sup>3</sup>√</button>
             <button class="calc-button function-button scientific-btn" onclick="fourRut()" title="Fourth Root"><sup>4</sup>√</button>
             <button class="calc-button function-button scientific-btn" onclick="fiveRut()" title="Fifth Root"><sup>5</sup>√</button>
