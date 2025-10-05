@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Scientific Calculator - JOINUS JS-82MS-5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #380334 0%, #25081e 100%);
+            padding: 20px;
+        }
+
+        .calculator-container {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .calculator-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-bottom: 1px solid #555;
+        }
+
+        .brand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .model-number {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        .calculator-title {
+            text-align: center;
+            font-family: "Courier Prime", monospace;
+            color: #fff;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .display-container {
+            padding: 15px;
+            background: #111;
+            border-bottom: 2px solid #333;
+        }
+
+        #result {
+            width: 100%;
+            height: 80px;
+            background: #000;
+            border: none;
+            color: #0f0;
+            font-family: "Courier Prime", monospace;
+            font-size: 24px;
+            text-align: right;
+            padding: 15px;
+            border-radius: 10px;
+            outline: none;
+            word-wrap: break-word;
+            overflow-y: auto;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 15px;
+            background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
+        }
+
+        .button-row {
+            display: contents;
+        }
+
+        .button-label {
+            grid-column: span 5;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2px;
+        }
+
+        .button-label small {
+            font-size: 9px;
+            color: #aaa;
+            text-align: center;
+            flex: 1;
+        }
+
+        .calc-button {
+            background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: "Josefin Sans", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid #555;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-button:hover {
+            background: linear-gradient(145deg, #5a5a5a, #4a4a4a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .calc-button:active {
+            transform: translateY(0);
+            background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .function-button {
+            background: linear-gradient(145deg, #5a2a5a, #4a1a4a);
+            font-size: 12px;
+        }
+
+        .function-button:hover {
+            background: linear-gradient(145deg, #6a3a6a, #5a2a5a);
+        }
+
+        .number-button {
+            background: linear-gradient(145deg, #333, #222);
+            font-size: 16px;
+        }
+
+        .number-button:hover {
+            background: linear-gradient(145deg, #444, #333);
+        }
+
+        .operator-button {
+            background: linear-gradient(145deg, #2a4a5a, #1a3a4a);
+        }
+
+        .operator-button:hover {
+            background: linear-gradient(145deg, #3a5a6a, #2a4a5a);
+        }
+
+        .equals-button {
+            background: linear-gradient(145deg, #2a7a2a, #1a6a1a);
+            font-weight: bold;
+        }
+
+        .equals-button:hover {
+            background: linear-gradient(145deg, #3a8a3a, #2a7a2a);
+        }
+
+        .clear-button {
+            background: linear-gradient(145deg, #7a2a2a, #6a1a1a);
+        }
+
+        .clear-button:hover {
+            background: linear-gradient(145deg, #8a3a3a, #7a2a2a);
+        }
+
+        /* Scientific notation styling */
+        .scientific-btn sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .calculator-container {
+                max-width: 100%;
+                border-radius: 15px;
+            }
+            
+            .button-grid {
+                gap: 6px;
+                padding: 10px;
+            }
+            
+            .calc-button {
+                padding: 10px 3px;
+                font-size: 12px;
+                min-height: 40px;
+            }
+            
+            #result {
+                height: 70px;
+                font-size: 20px;
+                padding: 12px;
+            }
+            
+            .button-label small {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .calc-button {
+                padding: 8px 2px;
+                font-size: 11px;
+                min-height: 35px;
+            }
+            
+            #result {
+                height: 60px;
+                font-size: 18px;
+            }
+        }
+
+        /* Scrollbar styling for display */
+        #result::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #result::-webkit-scrollbar-track {
+            background: #222;
+        }
+
+        #result::-webkit-scrollbar-thumb {
+            background: #0f0;
+            border-radius: 3px;
+        }
+
+        /* Animation for button press */
+        @keyframes buttonPress {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .calc-button.pressed {
+            animation: buttonPress 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Header Section -->
+        <div class="calculator-header">
+            <div class="brand-row">
+                <div class="brand-name">JOINUS</div>
+                <div class="model-number">JS-82MS-5</div>
+            </div>
+            <div class="calculator-title">Scientific Calculator</div>
+        </div>
+
+        <!-- Display Section -->
+        <div class="display-container">
+            <input type="text" id="result" readonly placeholder="0" />
+        </div>
+
+        <!-- Buttons Grid -->
+        <div class="button-grid">
+            <!-- Row 1: Root Buttons -->
+            <div class="button-label">
+                <small></small><small></small><small></small><small></small><small></small>
+            </div>
+            <button class="calc-button function-button scientific-btn" onclick="cubeRut()" title="Cube Root"><sup>3</sup>√</button>
+            <button class="calc-button function-button scientific-btn" onclick="fourRut()" title="Fourth Root"><sup>4</sup>√</button>
+            <button class="calc-button function-button scientific-btn" onclick="fiveRut()" title="Fifth Root"><sup>5</sup>√</button>
+            <button class="calc-button function-button" onclick="sqrt()" title="Square Root">√</button>
+            <button class="calc-button function-button" onclick="dis('(')" title="Left Parenthesis">(</button>
+
+            <!-- Row 2: Power Buttons -->
+            <div class="button-label">
+                <small>x²</small><small>x³</small><small>x⁴</small><small>x⁵</small><small>x⁶</small>
+            </div>
+            <button class="calc-button function-button scientific-btn" onclick="x2()" title="Square">x<sup>2</sup></button>
+            <button class="calc-button function-button scientific-btn" onclick="x3()" title="Cube">x<sup>3</sup></button>
+            <button class="calc-button function-button scientific-btn" onclick="x4()" title="Power 4">x<sup>4</sup></button>
+            <button class="calc-button function-button scientific-btn" onclick="x5()" title="Power 5">x<sup>5</sup></button>
+            <button class="calc-button function-button scientific-btn" onclick="x6()" title="Power 6">x<sup>6</sup></button>
+
+            <!-- Row 3: More Functions -->
+            <div class="button-label">
+                <small>x⁹</small><small>log</small><small>ln</small><small>e</small><small>cot</small>
+            </div>
+            <button class="calc-button function-button scientific-btn" onclick="x9()" title="Power 9">x<sup>9</sup></button>
+            <button class="calc-button function-button" onclick="log()" title="Logarithm base 10">log</button>
+            <button class="calc-button function-button" onclick="ln()" title="Natural Logarithm">ln</button>
+            <button class="calc-button function-button" onclick="e()" title="Euler's Number">e</button>
+            <button class="calc-button function-button" onclick="cot()" title="Cotangent">cot</button>
+
+            <!-- Row 4: Trigonometric Functions -->
+            <div class="button-label">
+                <small>asinh</small><small>asin</small><small>sinh</small><small>sin</small><small>cos</small>
+            </div>
+            <button class="calc-button function-button" onclick="asinh()" title="Inverse Hyperbolic Sine">asinh</button>
+            <button class="calc-button function-button" onclick="asin()" title="Inverse Sine">asin</button>
+            <button class="calc-button function-button" onclick="sinh()" title="Hyperbolic Sine">sinh</button>
+            <button class="calc-button function-button" onclick="sin()" title="Sine">sin</button>
+            <button class="calc-button function-button" onclick="cos()" title="Cosine">cos</button>
+
+            <!-- Row 5: More Trig Functions -->
+            <div class="button-label">
+                <small>cosh</small><small>acos</small><small>acosh</small><small>tan</small><small>tanh</small>
+            </div>
+            <button class="calc-button function-button" onclick="cosh()" title="Hyperbolic Cosine">cosh</button>
+            <button class="calc-button function-button" onclick="acos()" title="Inverse Cosine">acos</button>
+            <button class="calc-button function-button" onclick="acosh()" title="Inverse Hyperbolic Cosine">acosh</button>
+            <button class="calc-button function-button" onclick="tan()" title="Tangent">tan</button>
+            <button class="calc-button function-button" onclick="tanh()" title="Hyperbolic Tangent">tanh</button>
+
+            <!-- Row 6: Number Pad -->
+            <div class="button-label">
+                <small>M</small><small>G</small><small>T</small><small>INS</small><small>OFF</small>
+            </div>
+            <button class="calc-button number-button" onclick="dis('7')">7</button>
+            <button class="calc-button number-button" onclick="dis('8')">8</button>
+            <button class="calc-button number-button" onclick="dis('9')">9</button>
+            <button class="calc-button clear-button" onclick="del()" title="Delete">DEL</button>
+            <button class="calc-button clear-button" onclick="ac()" title="All Clear">AC</button>
+
+            <!-- Row 7 -->
+            <div class="button-label">
+                <small>MAT</small><small>VCT</small><small>K</small><small>nPr</small><small>nCr</small>
+            </div>
+            <button class="calc-button number-button" onclick="dis('4')">4</button>
+            <button class="calc-button number-button" onclick="dis('5')">5</button>
+            <button class="calc-button number-button" onclick="dis('6')">6</button>
+            <button class="calc-button operator-button" onclick="dis('*')">×</button>
+            <button class="calc-button operator-button" onclick="dis('/')">÷</button>
+
+            <!-- Row 8 -->
+            <div class="button-label">
+                <small>S-SUM</small><small>S-VAR</small><small>DISTR</small><small>e=0</small><small>a+ai</small>
+            </div>
+            <button class="calc-button number-button" onclick="dis('1')">1</button>
+            <button class="calc-button number-button" onclick="dis('2')">2</button>
+            <button class="calc-button number-button" onclick="dis('3')">3</button>
+            <button class="calc-button operator-button" onclick="dis('+')">+</button>
+            <button class="calc-button operator-button" onclick="dis('-')">-</button>
+
+            <!-- Row 9 -->
+            <div class="button-label">
+                <small>RND</small><small>RAN#</small><small>!@</small><small>DRG</small><small>Re-IM</small>
+            </div>
+            <button class="calc-button number-button" onclick="dis('0')">0</button>
+            <button class="calc-button number-button" onclick="dis('.')">.</button>
+            <button class="calc-button function-button" onclick="exp()" title="Exponential">EXP</button>
+            <button class="calc-button function-button" onclick="dis('ANS')" title="Previous Answer">ANS</button>
+            <button class="calc-button equals-button" onclick="solve()" title="Calculate">=</button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let lastAnswer = 0;
+        let isErrorState = false;
+        const display = document.getElementById('result');
+
+        // Utility functions
+        function addButtonEffect(button) {
+            button.classList.add('pressed');
+            setTimeout(() => button.classList.remove('pressed'), 100);
+        }
+
+        function entryCheck() {
+            if (display.value === "" || display.value === "Error" || isErrorState) {
+                display.value = "Error";
+                isErrorState = true;
+                setTimeout(() => {
+                    display.value = "";
+                    isErrorState = false;
+                }, 1000);
+                return false;
+            }
+            return true;
+        }
+
+        // Main calculator functions
+        function solve() {
+            try {
+                if (display.value === "") {
+                    display.value = "0";
+                    return;
+                }
+                
+                // Security check
+                const sanitizedInput = display.value.replace(/Math\./g, '');
+                if (/[a-zA-Z]/.test(sanitizedInput)) {
+                    throw new Error("Invalid input");
+                }
+                
+                let result = Function(`"use strict"; return(${display.value})`)();
+                
+                // Handle very large/small numbers
+                if (Math.abs(result) > 1e15 || (Math.abs(result) < 1e-15 && result !== 0)) {
+                    result = result.toExponential(10);
+                }
+                
+                display.value = result;
+                lastAnswer = result;
+            } catch (error) {
+                display.value = "Error";
+                isErrorState = true;
+                setTimeout(() => {
+                    display.value = "";
+                    isErrorState = false;
+                }, 1000);
+            }
+        }
+
+        function dis(val) {
+            if (isErrorState) {
+                display.value = "";
+                isErrorState = false;
+            }
+            
+            if (val === "ANS") {
+                display.value += lastAnswer;
+            } else {
+                display.value += val;
+            }
+            
+            // Limit input length
+            if (display.value.length > 50) {
+                display.value = display.value.slice(0, 50);
+            }
+        }
+
+        function del() {
+            if (!isErrorState) {
+                display.value = display.value.slice(0, -1);
+            }
+        }
+
+        function ac() {
+            display.value = "";
+            lastAnswer = 0;
+            isErrorState = false;
+        }
+
+        // Mathematical functions
+        function x2() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 2); }
+        function x3() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 3); }
+        function x4() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 4); }
+        function x5() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 5); }
+        function x6() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 6); }
+        function x9() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 9); }
+
+        function asinh() { if (entryCheck()) display.value = Math.asinh(parseFloat(display.value)); }
+        function asin() { if (entryCheck()) display.value = Math.asin(parseFloat(display.value)) * (180 / Math.PI); }
+        function sinh() { if (entryCheck()) display.value = Math.sinh(parseFloat(display.value)); }
+        function sin() { if (entryCheck()) display.value = Math.sin(parseFloat(display.value) * (Math.PI / 180)); }
+        function cos() { if (entryCheck()) display.value = Math.cos(parseFloat(display.value) * (Math.PI / 180)); }
+        function cosh() { if (entryCheck()) display.value = Math.cosh(parseFloat(display.value)); }
+        function acos() { if (entryCheck()) display.value = Math.acos(parseFloat(display.value)) * (180 / Math.PI); }
+        function acosh() { if (entryCheck()) display.value = Math.acosh(parseFloat(display.value)); }
+        function tan() { if (entryCheck()) display.value = Math.tan(parseFloat(display.value) * (Math.PI / 180)); }
+        function tanh() { if (entryCheck()) display.value = Math.tanh(parseFloat(display.value)); }
+        function atan() { if (entryCheck()) display.value = Math.atan(parseFloat(display.value)) * (180 / Math.PI); }
+        function atanh() { if (entryCheck()) display.value = Math.atanh(parseFloat(display.value)); }
+
+        function cot() { 
+            if (!entryCheck()) return;
+            const val = parseFloat(display.value) * (Math.PI / 180);
+            display.value = 1 / Math.tan(val);
+        }
+        
+        function coth() { 
+            if (!entryCheck()) return;
+            display.value = 1 / Math.tanh(parseFloat(display.value));
+        }
+
+        function log() { if (entryCheck()) display.value = Math.log10(parseFloat(display.value)); }
+        function ln() { if (entryCheck()) display.value = Math.log(parseFloat(display.value)); }
+
+        function cubeRut() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 1/3); }
+        function fourRut() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 1/4); }
+        function fiveRut() { if (entryCheck()) display.value = Math.pow(parseFloat(display.value), 1/5); }
+        function sqrt() { if (entryCheck()) display.value = Math.sqrt(parseFloat(display.value)); }
+        function exp() { if (entryCheck()) display.value = Math.exp(parseFloat(display.value)); }
+        
+        function e() {
+            if (display.value === "") {
+                display.value = Math.E;
+            } else {
+                display.value += Math.E;
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9' || key === '.') {
+                dis(key);
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                dis(key);
+            } else if (key === '(' || key === ')') {
+                dis(key);
+            } else if (key === 'Enter' || key === '=') {
+                solve();
+            } else if (key === 'Escape' || key === 'Delete') {
+                ac();
+            } else if (key === 'Backspace') {
+                del();
+            } else if (key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+
+        // Add click effects to all buttons
+        document.querySelectorAll('.calc-button').forEach(button => {
+            button.addEventListener('click', function() {
+                addButtonEffect(this);
+            });
+        });
+
+        // Prevent context menu on buttons
+        document.querySelectorAll('.calc-button').forEach(button => {
+            button.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
