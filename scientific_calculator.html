@@ -25,6 +25,8 @@
         }
 
         .calculator-container {
+            /* transform: scale(0.8);
+            transform-origin: top center; */
             width: 100%;
             max-width: 400px;
             background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
@@ -75,14 +77,14 @@
 
         #result {
             width: 100%;
-            height: 80px;
+            height: 50px;
             background: #000;
             border: none;
             color: #0f0;
             font-family: "Courier Prime", monospace;
             font-size: 24px;
             text-align: right;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             outline: none;
             word-wrap: break-word;
@@ -93,8 +95,8 @@
         .button-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            padding: 15px;
+            gap: 2px 5px;
+            padding: 10px;
             background: linear-gradient(160deg, #2d2c3a 0%, #3a3434 100%);
         }
 
@@ -124,13 +126,13 @@
             font-family: "Josefin Sans", sans-serif;
             font-size: 14px;
             font-weight: 500;
-            padding: 12px 5px;
+            padding: 2px;
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
                         inset 0 1px 0 rgba(255, 255, 255, 0.1);
             border: 1px solid #555;
-            min-height: 45px;
+            min-height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -168,6 +170,7 @@
 
         .operator-button {
             background: linear-gradient(145deg, #2a4a5a, #1a3a4a);
+            font-size: 25px;
         }
 
         .operator-button:hover {
@@ -205,20 +208,23 @@
             }
             
             .button-grid {
-                gap: 6px;
-                padding: 10px;
+                gap: 5px;
+                padding: 8px;
             }
             
             .calc-button {
-                padding: 10px 3px;
-                font-size: 12px;
-                min-height: 40px;
+                padding: 6px 3px;
+                font-size: 15px;
+                min-height: 25px;
             }
+            .operator-button {
+            font-size: 20px;
+        }
             
             #result {
-                height: 70px;
+                height: 40px;
                 font-size: 20px;
-                padding: 12px;
+                padding: 10px;
             }
             
             .button-label small {
@@ -228,13 +234,15 @@
 
         @media (max-width: 360px) {
             .calc-button {
-                padding: 8px 2px;
-                font-size: 11px;
-                min-height: 35px;
+                padding: 5px 2px;
+                font-size: 12px;
+                min-height: 25px;
             }
-            
+            .operator-button {
+            font-size: 20px;
+        }
             #result {
-                height: 60px;
+                height: 40px;
                 font-size: 18px;
             }
         }
@@ -284,9 +292,9 @@
         <!-- Buttons Grid -->
         <div class="button-grid">
             <!-- Row 1: Root Buttons -->
-            <div class="button-label">
+            <!-- <div class="button-label">
                 <small></small><small></small><small></small><small></small><small></small>
-            </div>
+            </div> -->
             <button class="calc-button function-button scientific-btn" onclick="cubeRut()" title="Cube Root"><sup>3</sup>√</button>
             <button class="calc-button function-button scientific-btn" onclick="fourRut()" title="Fourth Root"><sup>4</sup>√</button>
             <button class="calc-button function-button scientific-btn" onclick="fiveRut()" title="Fifth Root"><sup>5</sup>√</button>
